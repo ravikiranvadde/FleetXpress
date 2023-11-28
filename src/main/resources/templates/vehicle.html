@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Vehicle Data</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f5f5f5;
+		}
+
+		h2 {
+			text-align: center;
+			color: #333;
+		}
+
+		table {
+			width: 80%;
+			margin: 0 auto;
+			border-collapse: collapse;
+			background-color: #fff;
+			border: 1px solid #ddd;
+		}
+
+		th,
+		td {
+			border: 1px solid #ddd;
+			padding: 8px;
+			text-align: left;
+		}
+
+		th {
+			background-color: #f2f2f2;
+			color: #333;
+		}
+
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
+		tr:hover {
+			background-color: #ddd;
+		}
+
+		h1 {
+			color: red;
+
+		}
+
+		/* Logout link */
+		.logout {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			text-decoration: none;
+			color: black;
+			border: 1px solid red;
+			border-radius: 5px;
+			padding: 5px 10px;
+		}
+
+		.logout:hover {
+			background-color: red;
+			color: #fff;
+		}
+
+		#banner {
+			display: none;
+			padding: 10px;
+			text-align: center;
+			font-weight: bold;
+		}
+
+		/* Set red background if banner is null, else green */
+		#banner.null {
+			background-color: red;
+			color: white;
+		}
+
+		#banner.not-null {
+			background-color: green;
+			color: white;
+		}
+		
+		#banner.none {
+			background-color: #f5f5f5;
+			color: #f5f5f5;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="banner">
+		<p th:text="${banner}"></p>
+	</div>
+	<div class="container">
+		<a href="javascript:history.go(-1);">Back</a>
+		<a href="/home">
+			<h1>Fleet Xpress</h1>
+		</a>
+		<a href="/logout" class="logout">Logout</a>
+	</div>
+
+
+	<h2>Vehicle Data</h2>
+
+	<!-- Add a button to open the form -->
+	<button id="addVehicleButton">Add New Vehicle</button>
+
+	<!-- Form for adding a new vehicle (initially hidden) -->
+	<div id="addVehicleForm" style="display: none;">
+		<h3>Add New Vehicle</h3>
+		<form id="vehicleForm" action="/saveVehicle" method="POST">
+			<label for="make">Make:</label>
+			<input type="text" id="make" name="make" required><br>
+
+			<label for="model">Model:</label>
+			<input type="text" id="model" name="model" required><br>
+
+			<label for="year">Year:</label>
+			<input type="text" id="year" name="year" required><br>
+
+			<label for="licensePlate">License Plate:</label>
+			<input type="text" id="licensePlate" name="licensePlate" required><br>
+
+			<label for="status">Status:</label>
+			<select id="status" name="status" required>
+				<option value="">Select Status</option>
+				<option th:each="s : ${status}" th:value="${s.statusCode}" th:text="${s.status}"></option>
+			</select><br>
+
+
+			<button type="submit">Save</button>
+		</form>
+	</div>
+
+	<table>
+		<thead>
+			<tr>
+				<th> </th>
+				<th>Make</th>
+				<th>Model</th>
+				<th>Year</th>
+				<th>License Plate</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="vehicle : ${vehicles}">
+				<td>
+					<a th:href="@{'/admin/editVehicle/' + ${vehicle.vehicleid}}">Edit</a>
+				</td>
+				<td th:text="${vehicle.make}">Make</td>
+				<td th:text="${vehicle.model}">Model</td>
+				<td th:text="${vehicle.year}">Year</td>
+				<td th:text="${vehicle.licensePlate}">License Plate</td>
+				<td th:text="${vehicle.status.status}">Status</td>
+
+
+			</tr>
+		</tbody>
+	</table>
+
+	<script>
+		document.getElementById("addVehicleButton").addEventListener("click", function () {
+			document.getElementById("addVehicleForm").style.display = "block";
+		});
+
+		// Add a function to handle the "Edit" button click
+		function editVehicle(vehicleId) {
+			// You can implement your logic to handle the edit action, for example, redirect to an edit page
+			window.location.href = '/editVehicles.html?id=' + vehicleId;
+		}
+
+		
+
+		function toggleOptionsMenu(imageElement) {
+			var dropdownContent = imageElement.nextElementSibling;
+			dropdownContent.classList.toggle("show");
+		}
+
+		// Close the drop-down menu if the user clicks outside of it
+		window.onclick = function (event) {
+			if (!event.target.matches('.dropdown img')) {
+				var dropdowns = document.getElementsByClassName("dropdown-content");
+				for (var i = 0; i < dropdowns.length; i++) {
+					var openDropdown = dropdowns[i];
+					if (openDropdown.classList.contains('show')) {
+						openDropdown.classList.remove('show');
+					}
+				}
+			}
+		}
+
+	</script>
+
+
+</body>
+
+</html>
