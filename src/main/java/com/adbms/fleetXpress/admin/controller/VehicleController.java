@@ -32,83 +32,82 @@ public class VehicleController {
 
 	@Autowired
 	private VehicleService vehService;
-	
+
 	@Autowired
 	UserDetailService userService;
-	
+
 	@Autowired
 	DriverService driverService;
 
 	@Autowired
 	RentalHistoryRepo rentalHistRepo;
 
-	
 	@GetMapping("/admin/vehicles")
-    public ModelAndView getAllCars() {
+	public ModelAndView getAllCars() {
 		String banner = null;
 		ModelAndView modelAndView = new ModelAndView();
 		List<StatusCodes> status = vehService.getAllStatusCodes();
 		List<Vehicle> veh = vehService.getAllVehicles();
-        modelAndView.addObject("vehicles", veh);
-        modelAndView.addObject("status", status);
-        modelAndView.addObject("banner", banner);
-        modelAndView.setViewName("vehicle");
-        return modelAndView;
-    }
-	
+		modelAndView.addObject("vehicles", veh);
+		modelAndView.addObject("status", status);
+		modelAndView.addObject("banner", banner);
+		modelAndView.setViewName("vehicle");
+		return modelAndView;
+	}
+
 	@PostMapping("/admin/saveVehicle")
 	public ModelAndView saveVehicle(VehicleDto vehicle) {
 		String banner = " ";
 		try {
-		 vehService.saveVehicle(vehicle);
-		 banner ="Saved Successfully";
+			vehService.saveVehicle(vehicle);
+			banner = "Saved Successfully";
 		} catch (Exception e) {
 			banner = "Error";
 		}
-		 ModelAndView modelAndView = new ModelAndView();
-			List<StatusCodes> status = vehService.getAllStatusCodes();
-			List<Vehicle> veh = vehService.getAllVehicles();
-	        modelAndView.addObject("vehicles", veh);
-	        modelAndView.addObject("status", status);
-	        modelAndView.addObject("banner", banner);
-	        modelAndView.setViewName("vehicle");
+		ModelAndView modelAndView = new ModelAndView();
+		List<StatusCodes> status = vehService.getAllStatusCodes();
+		List<Vehicle> veh = vehService.getAllVehicles();
+		modelAndView.addObject("vehicles", veh);
+		modelAndView.addObject("status", status);
+		modelAndView.addObject("banner", banner);
+		modelAndView.setViewName("vehicle");
 		return modelAndView;
-		
+
 	}
-	
+
 	@GetMapping("/admin/editVehicle/{vehicleid}")
-    public ModelAndView getCarByID(@PathVariable(name = "vehicleid") Long vehicleid) {
+	public ModelAndView getCarByID(@PathVariable(name = "vehicleid") Long vehicleid) {
 		ModelAndView modelAndView = new ModelAndView();
 		List<StatusCodes> status = vehService.getAllStatusCodes();
 		Vehicle veh = vehService.getVehicleByID(vehicleid);
-        modelAndView.addObject("vehicle", veh);
-        modelAndView.addObject("status", status);
-        modelAndView.setViewName("editVehicle");
-        return modelAndView;
-    }
-	
+		modelAndView.addObject("vehicle", veh);
+		modelAndView.addObject("status", status);
+		modelAndView.setViewName("editVehicle");
+		return modelAndView;
+	}
+
 	@PostMapping("/admin/updateVehicle")
 	public ModelAndView editVehicle(VehicleDto vehicle) {
 		String banner = "";
 		try {
-		 vehService.editVehicle(vehicle);
-		 banner ="Updated Successfully";
+			vehService.editVehicle(vehicle);
+			banner = "Updated Successfully";
 		} catch (Exception e) {
 			banner = "Error";
 		}
-		 ModelAndView modelAndView = new ModelAndView();
-			List<StatusCodes> status = vehService.getAllStatusCodes();
-			List<Vehicle> veh = vehService.getAllVehicles();
-	        modelAndView.addObject("vehicles", veh);
-	        modelAndView.addObject("status", status);
-	        modelAndView.addObject("banner", banner);
-	        modelAndView.setViewName("vehicle");
+		ModelAndView modelAndView = new ModelAndView();
+		List<StatusCodes> status = vehService.getAllStatusCodes();
+		List<Vehicle> veh = vehService.getAllVehicles();
+		modelAndView.addObject("vehicles", veh);
+		modelAndView.addObject("status", status);
+		modelAndView.addObject("banner", banner);
+		modelAndView.setViewName("vehicle");
 		return modelAndView;
-		
+
 	}
-	
+
 	@PostMapping("/rentVehicle")
-	public void rentVehicle(String fromDate,String toDate, String vehicleId ) throws ParseException {
+	public void rentVehicle(String fromDate, String toDate, String vehicleId) throws ParseException {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		Date todate = formatter.parse(toDate);
 		Date fromdate = formatter.parse(fromDate);
@@ -116,7 +115,7 @@ public class VehicleController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		MyUserDetails users = (MyUserDetails) userService.loadUserByUsername(auth.getName());
 		Driver driver = driverService.getDriverDetailsByLicense(users.getUser().getLicenseNumber());
-		vehService.updateVehicleStatusById(vehicleid,"REN");
+		vehService.updateVehicleStatusById(vehicleid, "REN");
 		Vehicle vehicle = vehService.getVehicleByID(vehicleid);
 		RentalHistory rh = new RentalHistory();
 		rh.setDriver(driver);
@@ -125,14 +124,14 @@ public class VehicleController {
 		rh.setVehicle(vehicle);
 		rentalHistRepo.save(rh);
 	}
-	
+
 	@GetMapping("/vehicleDetails/{vehicleid}")
-    public ModelAndView getVehicleDetails(@PathVariable(name = "vehicleid") Long vehicleid) {
+	public ModelAndView getVehicleDetails(@PathVariable(name = "vehicleid") Long vehicleid) {
 		ModelAndView modelAndView = new ModelAndView();
 		VehicleDetails veh = vehService.getVehicleDetails(vehicleid);
-        modelAndView.addObject("vehicleDetails", veh);
-        modelAndView.setViewName("vehicleDetails");
-        return modelAndView;
-    }
-	
+		modelAndView.addObject("vehicleDetails", veh);
+		modelAndView.setViewName("vehicleDetails");
+		return modelAndView;
+	}
+
 }
