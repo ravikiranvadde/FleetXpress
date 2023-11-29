@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.adbms.fleetXpress.dto.VehicleDetails;
+import com.adbms.fleetXpress.dto.VehicleDetailsProjection;
 import com.adbms.fleetXpress.dto.VehicleDto;
 import com.adbms.fleetXpress.entity.StatusCodes;
 import com.adbms.fleetXpress.entity.Vehicle;
 import com.adbms.fleetXpress.mapper.VehicleMapper;
+import com.adbms.fleetXpress.repo.VehicleDetailsRepo;
 import com.adbms.fleetXpress.repo.VehicleRepository;
 
 @Service
@@ -16,6 +19,9 @@ public class VehicleService {
 	
 	@Autowired
 	public VehicleRepository vehicleRepo;
+	
+	@Autowired
+	public VehicleDetailsRepo vehicleDetailsRepo;
 	
 	@Autowired
 	public VehicleMapper vehMapper;
@@ -56,5 +62,11 @@ public class VehicleService {
 	
 	public void updateVehicleStatusById(Long id, String statusCode) {
 		vehicleRepo.updateVehicleStatus(id,statusCode);
+	}
+	
+	public VehicleDetails getVehicleDetails(Long id) {
+		VehicleDetailsProjection vd = vehicleDetailsRepo.getVehicleDetails(id);
+		VehicleDetails vds = new VehicleDetails(vd.getMake(),vd.getModel(),vd.getYear(),vd.getLicensePlate(),vd.getMaintenanceDetails(),vd.getVehicle_Spec());
+		return vds;
 	}
 }

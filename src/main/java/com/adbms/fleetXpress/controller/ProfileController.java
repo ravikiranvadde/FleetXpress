@@ -83,7 +83,7 @@ public class ProfileController {
 	}
 	
 	@GetMapping("/rentalDetails")
-	public String getRentalDetails() {
+	public ModelAndView getRentalDetails() {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		MyUserDetails users = (MyUserDetails) userService.loadUserByUsername(auth.getName());
@@ -98,7 +98,7 @@ public class ProfileController {
 		}
 		modelAndView.addObject("rentalDetails", rentDetails);
 		modelAndView.setViewName("rentalDetails");
-		return "redirect:/profile";
+		return modelAndView;
 	}
 
 }

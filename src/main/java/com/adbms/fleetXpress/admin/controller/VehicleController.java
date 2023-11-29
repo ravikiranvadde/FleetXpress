@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.adbms.fleetXpress.dto.VehicleDetails;
 import com.adbms.fleetXpress.dto.VehicleDto;
 import com.adbms.fleetXpress.entity.Driver;
 import com.adbms.fleetXpress.entity.RentalHistory;
@@ -124,5 +125,14 @@ public class VehicleController {
 		rh.setVehicle(vehicle);
 		rentalHistRepo.save(rh);
 	}
+	
+	@GetMapping("/vehicleDetails/{vehicleid}")
+    public ModelAndView getVehicleDetails(@PathVariable(name = "vehicleid") Long vehicleid) {
+		ModelAndView modelAndView = new ModelAndView();
+		VehicleDetails veh = vehService.getVehicleDetails(vehicleid);
+        modelAndView.addObject("vehicleDetails", veh);
+        modelAndView.setViewName("vehicleDetails");
+        return modelAndView;
+    }
 	
 }

@@ -1,7 +1,5 @@
 package com.adbms.fleetXpress.dto;
 
-import com.adbms.fleetXpress.entity.StatusCodes;
-
 public class DriverVehicleDto {
 	
 	
