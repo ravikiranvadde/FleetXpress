@@ -12,7 +12,7 @@ import com.adbms.fleetXpress.entity.VehicleSpec;
 public interface VehicleDetailsRepo extends JpaRepository<VehicleSpec, Long> {
 
 	
-	@Query(value = "select v.make as make,v.model as model,v.\"year\" as year ,v.licenseplate as licensePlate, STRING_AGG(CONCAT(m.maintenanceType, ': ', m.maintenanceDate), ', ') AS maintenanceDetails, vs.vehicle_spec as vehicle_spec,SUM(f.milesDriven) as milesDriven "
+	@Query(value = "select v.vehicleid, v.make as make,v.model as model,v.\"year\" as year ,v.licenseplate as licensePlate, STRING_AGG(CONCAT(m.maintenanceType, ': ', m.maintenanceDate), ', ') AS maintenanceDetails, vs.vehicle_spec as vehicle_spec,SUM(f.milesDriven) as milesDriven "
 			+ "FROM vehicle v "
 			+ "LEFT JOIN maintenance m ON m.vehicleid = v.vehicleid "
 			+ "LEFT JOIN vehicle_specs vs ON vs.vehicleid = v.vehicleid "

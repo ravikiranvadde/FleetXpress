@@ -16,4 +16,6 @@ public interface VehicleDetailsProjection {
 	
 	Long getMilesDriven();
 
+	Long getVehicleid();
+
 }

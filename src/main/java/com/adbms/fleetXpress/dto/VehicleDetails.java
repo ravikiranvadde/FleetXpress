@@ -1,8 +1,8 @@
 package com.adbms.fleetXpress.dto;
 
-import java.io.Serializable;
-
 public class VehicleDetails implements VehicleDetailsProjection{
+	
+	public Long vehicleid;
 
 	public String make;
 
@@ -55,9 +55,18 @@ public class VehicleDetails implements VehicleDetailsProjection{
 		return this.vehicle_spec;
 	}
 	
-	
+	@Override
+	public Long getMilesDriven() {
+		// TODO Auto-generated method stub
+		return this.milesDriven;
+	}
 
-	public VehicleDetails(String make, String model, Long year, String licensePlate, String maintenanceDetails,
+	@Override
+	public Long getVehicleid() {
+		return this.vehicleid;
+	}
+
+	public VehicleDetails(Long vehicleid, String make, String model, Long year, String licensePlate, String maintenanceDetails,
 			String vehicle_spec,Long milesDriven) {
 		super();
 		this.make = make;
@@ -67,13 +76,7 @@ public class VehicleDetails implements VehicleDetailsProjection{
 		this.maintenanceDetails = maintenanceDetails;
 		this.vehicle_spec = vehicle_spec;
 		this.milesDriven = milesDriven;
+		this.vehicleid = vehicleid;
 	}
 
-	@Override
-	public Long getMilesDriven() {
-		// TODO Auto-generated method stub
-		return this.milesDriven;
-	}
-
-	
 }

@@ -28,7 +28,7 @@ public class Maintenance {
 	private String maintenanceType;
 	
 	@Column(name = "maintenancedate")
-	private Date maintenanceDate;
+	private java.util.Date maintenanceDate;
 	
 	@Column(name = "cost")
 	private Long cost;
@@ -57,12 +57,12 @@ public class Maintenance {
 		this.maintenanceType = maintenanceType;
 	}
 
-	public Date getMaintenanceDate() {
+	public java.util.Date getMaintenanceDate() {
 		return maintenanceDate;
 	}
 
-	public void setMaintenanceDate(Date maintenanceDate) {
-		this.maintenanceDate = maintenanceDate;
+	public java.util.Date setMaintenanceDate(java.util.Date maintenanceDate) {
+		return this.maintenanceDate = maintenanceDate;
 	}
 
 	public Long getCost() {

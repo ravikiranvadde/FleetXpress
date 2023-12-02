@@ -136,7 +136,7 @@
 	</div>
 
 <br>
-<div class="search-container">
+<div class="search-container" style="margin-left: 75px;">
 		<label for="searchBox">Search Vehicle:</label>
 		<input type="text" id="searchBox" oninput="searchVehicles()"
 			placeholder="Search by Make, Model, License Plate">
@@ -156,7 +156,7 @@
 		<tbody>
 			<tr th:each="vehicle : ${vehicles}">
 				<td>
-					<a th:href="@{'/admin/editVehicle/' + ${vehicle.vehicleid}}">Edit</a>
+					<a th:href="@{'/vehicleDetails/' + ${vehicle.vehicleid}}">&#8942;</a>
 				</td>
 				<td th:text="${vehicle.make}">Make</td>
 				<td th:text="${vehicle.model}">Model</td>

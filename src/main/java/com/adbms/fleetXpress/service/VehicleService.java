@@ -66,7 +66,7 @@ public class VehicleService {
 	
 	public VehicleDetails getVehicleDetails(Long id) {
 		VehicleDetailsProjection vd = vehicleDetailsRepo.getVehicleDetails(id);
-		VehicleDetails vds = new VehicleDetails(vd.getMake(),vd.getModel(),vd.getYear(),vd.getLicensePlate(),vd.getMaintenanceDetails(),vd.getVehicle_Spec(),vd.getMilesDriven());
+		VehicleDetails vds = new VehicleDetails(vd.getVehicleid(),vd.getMake(),vd.getModel(),vd.getYear(),vd.getLicensePlate(),vd.getMaintenanceDetails(),vd.getVehicle_Spec(),vd.getMilesDriven());
 		return vds;
 	}
 	

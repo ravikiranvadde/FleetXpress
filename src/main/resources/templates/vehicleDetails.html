@@ -102,6 +102,22 @@
 			color: red;
 			margin-top: 30px;
 		}
+		
+		.edit-button {
+        display: inline-block;
+        padding: 10px 15px;
+        margin-right: 10px;
+        background-color: #3498db;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .edit-button:hover {
+        background-color: #2980b9;
+    }
+
 	</style>
 </head>
 
@@ -115,6 +131,10 @@
 
 	<div class="vehicle-details-container">
 		<h2>Vehicle Details</h2>
+		<div th:if="${isAdmin}">
+            <a th:href="@{'/admin/editVehicle/' + ${vehicleDetails.vehicleid}}" class="edit-button">Edit Vehicle</a>
+            <a th:href="@{'/admin/addMaintenance/' + ${vehicleDetails.vehicleid}}" class="edit-button">Add Maintenance Record</a>
+        </div>
 		<table class="vehicle-details-table">
 
 			<tr>

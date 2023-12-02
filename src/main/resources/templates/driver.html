@@ -86,7 +86,6 @@
 
 	
     <div class="container">
-        <a href="javascript:history.go(-1);">Back</a>
         <a href="/home"><h1>Fleet Xpress</h1></a>
         <a href="/logout" class="logout">Logout</a>
     </div>
@@ -95,12 +94,13 @@
     <h2>Driver Data</h2>
     
     <!-- Add a button to open the form -->
-    <button id="addDriverButton">Add New Driver</button>
+    <button id="addDriverButton" style="margin-left: 75px;">Add New Driver</button>
+    <br>
 
     <!-- Form for adding a new vehicle (initially hidden) -->
     <div id="addDriverForm" style="display: none;">
-        <h3>Add New Driver</h3>
-        <form id="driverForm" action="/admin/saveDriver" method="POST">
+        <h3 style="margin-left: 75px;">Add New Driver</h3>
+        <form id="driverForm" action="/admin/saveDriver" method="POST" style="margin-left: 75px;">
             <label for="firstName">First Name:</label>
             <input type="text" id="firstName" name="firstName" required><br>
 
@@ -119,8 +119,8 @@
             <button type="submit">Submit</button>
         </form>
     </div>
-    
-    <div class="search-container">
+    <br>
+    <div class="search-container" style="margin-left: 75px;">
 		<label for="searchBox">Search Vehicle:</label>
 		<input type="text" id="searchBox" oninput="searchDrivers()"
 			placeholder="Search by First Name, Last Name">
@@ -151,9 +151,19 @@
     
     
     <script th:inline="javascript">
-		document.getElementById("addDriverButton").addEventListener("click", function () {
-            document.getElementById("addDriverForm").style.display = "block";
-        });
+        
+        document.getElementById("addDriverButton").addEventListener("click", function () {
+        var addVehicleForm = document.getElementById("addDriverForm");
+
+        // Toggle the visibility of the form
+        if (addDriverForm.style.display === "block") {
+            // If the form is visible, hide it
+            addDriverForm.style.display = "none";
+        } else {
+            // If the form is hidden, show it
+            addDriverForm.style.display = "block";
+        }
+    });
         
         function searchDrivers() {
 			var searchQuery = document.getElementById('searchBox').value;

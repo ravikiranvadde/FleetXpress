@@ -55,13 +55,13 @@ public class VehicleController {
 		modelAndView.setViewName("vehicle");
 		return modelAndView;
 	}
-	
+
 	@GetMapping("/admin/searchVehicles")
 	public List<Vehicle> searchAllVehicles(@RequestParam String query) {
 		List<Vehicle> veh = vehService.searchAllAdminVehicles(query);
 		return veh;
 	}
-	
+
 	@GetMapping("/searchVehicles")
 	public List<Vehicle> searchAllCars(@RequestParam String query) {
 		List<Vehicle> veh = vehService.searchAllVehicles(query);
@@ -108,15 +108,7 @@ public class VehicleController {
 		} catch (Exception e) {
 			banner = "Error";
 		}
-		ModelAndView modelAndView = new ModelAndView();
-		List<StatusCodes> status = vehService.getAllStatusCodes();
-		List<Vehicle> veh = vehService.getAllVehicles();
-		modelAndView.addObject("vehicles", veh);
-		modelAndView.addObject("status", status);
-		modelAndView.addObject("banner", banner);
-		modelAndView.setViewName("vehicle");
-		return modelAndView;
-
+		return getAllCars();
 	}
 
 	@PostMapping("/rentVehicle")
@@ -141,10 +133,16 @@ public class VehicleController {
 	@GetMapping("/vehicleDetails/{vehicleid}")
 	public ModelAndView getVehicleDetails(@PathVariable(name = "vehicleid") Long vehicleid) {
 		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		MyUserDetails users = (MyUserDetails) userService.loadUserByUsername(auth.getName());
+		Boolean isAdmin = false;
+		if (users.getUser().getRoles().getRolename().equals("ADMIN")) {
+			isAdmin = true;
+		}
 		VehicleDetails veh = vehService.getVehicleDetails(vehicleid);
 		modelAndView.addObject("vehicleDetails", veh);
+		modelAndView.addObject("isAdmin", isAdmin);
 		modelAndView.setViewName("vehicleDetails");
 		return modelAndView;
 	}
-
 }
