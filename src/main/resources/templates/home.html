@@ -103,6 +103,27 @@
 			color: red;
 			text-align: center;
 		}
+		
+    .search-container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: 75px;
+        text-align: left;
+    }
+
+    label {
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+    #searchBox {
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
 	</style>
 </head>
 
@@ -124,6 +145,15 @@
 		</div>
 	</div>
 	<h2>Available Vehicles</h2>
+	<!-- Add this code above the table -->
+	<!-- Add this code above the table -->
+	<div class="search-container">
+		<label for="searchBox">Search Vehicle:</label>
+		<input type="text" id="searchBox" oninput="searchVehicles()"
+			placeholder="Search by Make, Model, Year, License Plate">
+	</div>
+
+	<br>
 	<table>
 		<thead>
 			<tr>
@@ -238,6 +268,91 @@
 			var data = '&fromDate=' + encodeURIComponent(fromDate) + '&toDate=' + encodeURIComponent(toDate) + '&vehicleId=' + encodeURIComponent(vehicleId);
 			xhr.send(data);
 		}
+
+		function searchVehicles() {
+			var searchQuery = document.getElementById('searchBox').value;
+
+			// Make an AJAX request to the /searchVehicle endpoint
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					if (xhr.status === 200) {
+						// Successful response, update the table with the search results
+						updateTable(JSON.parse(xhr.responseText));
+					} else {
+						// Handle the error if needed
+						console.error("Error searching vehicles. Please try again.");
+					}
+				}
+			};
+
+			xhr.open('GET', '/searchVehicles?query=' + encodeURIComponent(searchQuery), true);
+			xhr.send();
+		}
+
+		function updateTable(searchResults) {
+			var tableBody = document.querySelector('tbody');
+			tableBody.innerHTML = ''; // Clear the existing table rows
+
+			// Iterate through the search results and populate the table
+			for (var i = 0; i < searchResults.length; i++) {
+				var vehicle = searchResults[i];
+				var row = tableBody.insertRow(i);
+
+				// Insert cells with vehicle details
+				// (Note: Update the following lines to match your actual vehicle properties)
+				var cell1 = row.insertCell(0);
+				cell1.id = 'vehicleid';
+				cell1.textContent = vehicle.vehicleid;
+				cell1.hidden = true;
+
+				var cell2 = row.insertCell(1);
+				var menuContainer = document.createElement('div');
+				menuContainer.className = 'menu-container1';
+				var menuDropdown = document.createElement('div');
+				menuDropdown.className = 'menu-dropdown1';
+				var menuButton = document.createElement('a');
+				menuButton.className = 'menu-button1';
+				menuButton.innerHTML = '&#8942;';
+				var menuContent = document.createElement('div');
+				menuContent.className = 'menu-dropdown-content1';
+				var rentLink = document.createElement('a');
+				rentLink.href = '#';
+				rentLink.setAttribute('onclick', 'openRentPopup(\'' + vehicle.vehicleid + '\')');
+				rentLink.textContent = 'Rent';
+				var vehicleDetailsLink = document.createElement('a');
+				vehicleDetailsLink.href = '/vehicleDetails/' + vehicle.vehicleid;
+				vehicleDetailsLink.textContent = 'Vehicle Details';
+
+				menuContent.appendChild(rentLink);
+				menuContent.appendChild(vehicleDetailsLink);
+				menuDropdown.appendChild(menuButton);
+				menuDropdown.appendChild(menuContent);
+				menuContainer.appendChild(menuDropdown);
+				cell2.appendChild(menuContainer);
+
+					var cell3 = row.insertCell(2);
+					cell3.textContent = vehicle.make;
+
+					var cell4 = row.insertCell(3);
+					cell4.textContent = vehicle.model;
+
+					var cell5 = row.insertCell(4);
+					cell5.textContent = vehicle.year;
+
+					var cell6 = row.insertCell(5);
+					cell6.textContent = vehicle.licensePlate;
+
+					var cell7 = row.insertCell(6);
+					cell7.textContent = vehicle.status.status;
+
+				// Append the row to the table body
+				tableBody.appendChild(row);
+			}
+		}
+
+
+
 	</script>
 
 

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,6 +46,12 @@ public class DriverController {
         modelAndView.addObject("list", driverVehs);
         modelAndView.setViewName("driverVehicle");
         return modelAndView;
+    }
+	
+	@GetMapping("/admin/searchDrivers")
+    public List<Driver> searchDrivers(@RequestParam(value="query") String query) {
+		List<Driver> drivers = driverService.searchDrivers(query);
+        return drivers;
     }
 	
 	@PostMapping("/admin/saveDriver")

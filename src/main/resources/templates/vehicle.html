@@ -106,12 +106,12 @@
 	<h2>Vehicle Data</h2>
 
 	<!-- Add a button to open the form -->
-	<button id="addVehicleButton">Add New Vehicle</button>
-
+	<button id="addVehicleButton" style="margin-left: 75px;">Add New Vehicle</button>
+	<br>
 	<!-- Form for adding a new vehicle (initially hidden) -->
-	<div id="addVehicleForm" style="display: none;">
-		<h3>Add New Vehicle</h3>
-		<form id="vehicleForm" action="/saveVehicle" method="POST">
+	<div id="addVehicleForm" style="display: none; " >
+		<h3 style="margin-left: 75px;">Add New Vehicle</h3>
+		<form id="vehicleForm" action="/admin/saveVehicle" method="POST" style="margin-left: 75px;">
 			<label for="make">Make:</label>
 			<input type="text" id="make" name="make" required><br>
 
@@ -135,6 +135,13 @@
 		</form>
 	</div>
 
+<br>
+<div class="search-container">
+		<label for="searchBox">Search Vehicle:</label>
+		<input type="text" id="searchBox" oninput="searchVehicles()"
+			placeholder="Search by Make, Model, License Plate">
+	</div>
+<br>
 	<table>
 		<thead>
 			<tr>
@@ -163,37 +170,102 @@
 	</table>
 
 	<script>
-		document.getElementById("addVehicleButton").addEventListener("click", function () {
-			document.getElementById("addVehicleForm").style.display = "block";
-		});
+    document.getElementById("addVehicleButton").addEventListener("click", function () {
+        var addVehicleForm = document.getElementById("addVehicleForm");
 
-		// Add a function to handle the "Edit" button click
-		function editVehicle(vehicleId) {
-			// You can implement your logic to handle the edit action, for example, redirect to an edit page
-			window.location.href = '/editVehicles.html?id=' + vehicleId;
-		}
+        // Toggle the visibility of the form
+        if (addVehicleForm.style.display === "block") {
+            // If the form is visible, hide it
+            addVehicleForm.style.display = "none";
+        } else {
+            // If the form is hidden, show it
+            addVehicleForm.style.display = "block";
+        }
+    });
 
-		
+    // Add a function to handle the "Edit" button click
+    function editVehicle(vehicleId) {
+        // You can implement your logic to handle the edit action, for example, redirect to an edit page
+        window.location.href = '/editVehicles.html?id=' + vehicleId;
+    }
 
-		function toggleOptionsMenu(imageElement) {
-			var dropdownContent = imageElement.nextElementSibling;
-			dropdownContent.classList.toggle("show");
-		}
+    function toggleOptionsMenu(imageElement) {
+        var dropdownContent = imageElement.nextElementSibling;
+        dropdownContent.classList.toggle("show");
+    }
 
-		// Close the drop-down menu if the user clicks outside of it
-		window.onclick = function (event) {
-			if (!event.target.matches('.dropdown img')) {
-				var dropdowns = document.getElementsByClassName("dropdown-content");
-				for (var i = 0; i < dropdowns.length; i++) {
-					var openDropdown = dropdowns[i];
-					if (openDropdown.classList.contains('show')) {
-						openDropdown.classList.remove('show');
+    // Close the drop-down menu if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropdown img')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+    
+    function searchVehicles() {
+			var searchQuery = document.getElementById('searchBox').value;
+
+			// Make an AJAX request to the /searchVehicle endpoint
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					if (xhr.status === 200) {
+						// Successful response, update the table with the search results
+						updateTable(JSON.parse(xhr.responseText));
+					} else {
+						// Handle the error if needed
+						console.error("Error searching vehicles. Please try again.");
 					}
 				}
-			}
+			};
+
+			xhr.open('GET', '/admin/searchVehicles?query=' + encodeURIComponent(searchQuery), true);
+			xhr.send();
 		}
 
-	</script>
+		function updateTable(searchResults) {
+        var tableBody = document.querySelector('tbody');
+        tableBody.innerHTML = ''; // Clear the existing table rows
+
+        // Iterate through the search results and populate the table
+        for (var i = 0; i < searchResults.length; i++) {
+            var vehicle = searchResults[i];
+            var row = tableBody.insertRow(i);
+
+            // Insert cells with vehicle details
+            // Note: Update the following lines to match your actual vehicle properties
+            var cell1 = row.insertCell(0);
+            var editLink = document.createElement('a');
+            editLink.href = '/admin/editVehicle/' + vehicle.vehicleid;
+            editLink.textContent = 'Edit';
+            cell1.appendChild(editLink);
+
+            var cell2 = row.insertCell(1);
+            cell2.textContent = vehicle.make;
+
+            var cell3 = row.insertCell(2);
+            cell3.textContent = vehicle.model;
+
+            var cell4 = row.insertCell(3);
+            cell4.textContent = vehicle.year;
+
+            var cell5 = row.insertCell(4);
+            cell5.textContent = vehicle.licensePlate;
+
+            var cell6 = row.insertCell(5);
+            cell6.textContent = vehicle.status.status;
+
+            // Append the row to the table body
+            tableBody.appendChild(row);
+        }
+    }
+</script>
+
 
 
 </body>

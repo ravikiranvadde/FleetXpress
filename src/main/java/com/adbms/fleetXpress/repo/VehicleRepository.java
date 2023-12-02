@@ -30,5 +30,13 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 	@Modifying
 	@Query(value = "UPDATE Vehicle SET status.statusCode = :statusCode WHERE vehicleid = :id")
 	public void updateVehicleStatus(Long id, String statusCode);
+	
+	@Query(value = "select v from Vehicle v where v.status.statusCode ='AV' "
+			+ "and (v.make like :query or v.model like :query or v.licensePlate like :query ) ")
+	List<Vehicle> searchAllVehicles(String query);
+	
+	@Query(value = "select v from Vehicle v where "
+			+ "(v.make like :query or v.model like :query or v.licensePlate like :query ) ")
+	List<Vehicle> searchAllAdminVehicles(String query);
 
 }

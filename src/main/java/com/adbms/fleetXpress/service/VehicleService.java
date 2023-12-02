@@ -36,7 +36,7 @@ public class VehicleService {
 
 	public Vehicle saveVehicle(VehicleDto vehicledto) {
 		List<Vehicle> list =vehicleRepo.getVehiclesByLicensePlate(vehicledto.getLicensePlate());
-		if(!list.isEmpty()) {
+		if(list.isEmpty()) {
 		Vehicle vehicle = vehMapper.toVehicle(vehicledto);
 		return vehicleRepo.save(vehicle);
 		}
@@ -66,7 +66,17 @@ public class VehicleService {
 	
 	public VehicleDetails getVehicleDetails(Long id) {
 		VehicleDetailsProjection vd = vehicleDetailsRepo.getVehicleDetails(id);
-		VehicleDetails vds = new VehicleDetails(vd.getMake(),vd.getModel(),vd.getYear(),vd.getLicensePlate(),vd.getMaintenanceDetails(),vd.getVehicle_Spec());
+		VehicleDetails vds = new VehicleDetails(vd.getMake(),vd.getModel(),vd.getYear(),vd.getLicensePlate(),vd.getMaintenanceDetails(),vd.getVehicle_Spec(),vd.getMilesDriven());
 		return vds;
+	}
+	
+	public List<Vehicle> searchAllVehicles(String query){
+		String updatedQuery = "%"+query+"%";
+		return vehicleRepo.searchAllVehicles(updatedQuery);
+	}
+	
+	public List<Vehicle> searchAllAdminVehicles(String query){
+		String updatedQuery = "%"+query+"%";
+		return vehicleRepo.searchAllAdminVehicles(updatedQuery);
 	}
 }

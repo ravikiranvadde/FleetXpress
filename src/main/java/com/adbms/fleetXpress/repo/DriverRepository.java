@@ -29,4 +29,7 @@ public interface DriverRepository extends JpaRepository<Driver, Long> {
 	@Modifying
 	@Query(value = "UPDATE Driver SET phone = :phone WHERE driverId = :id")
 	public void updateDriver(String phone, Long id);
+	
+	@Query(value = "select d from Driver d where (d.firstName like :query or d.lastName like :query) ")
+	List<Driver> searchDrivers(String query);
 }

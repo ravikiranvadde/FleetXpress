@@ -13,5 +13,7 @@ public interface VehicleDetailsProjection {
 	String getMaintenanceDetails();
 	
 	String getVehicle_Spec();
+	
+	Long getMilesDriven();
 
 }

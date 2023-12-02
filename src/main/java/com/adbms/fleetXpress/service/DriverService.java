@@ -34,6 +34,12 @@ public class DriverService {
 		return driverRepo.findAll();
 	}
 
+	public List<Driver> searchDrivers(String query){
+		query = "%"+query+"%";
+		return driverRepo.searchDrivers(query);
+	}
+
+	
 	public List<DriverVehicleDto> getAllDriversAssignedWithVehicles(){
 		List<DriverVehicle> data = driverRepo.findAllDriverVehicles();
 		List<DriverVehicleDto> list = new ArrayList<>();
@@ -53,7 +59,7 @@ public class DriverService {
 	public String saveDriver(DriverDTO driver) {
 		Driver driv = driverRepo.getDriverByLicense(driver.getLicenseNumber());
 		try {
-			if (ObjectUtils.isEmpty(driv)) {
+			if (driv==null) {
 				Driver drivEntity = driverMapper.fromDriverDTO(driver);
 				driverRepo.save(drivEntity);
 				return "Saved Successfully";

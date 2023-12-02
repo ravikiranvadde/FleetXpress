@@ -133,6 +133,10 @@
 				<td><strong>License Plate</strong></td>
 				<td><span th:text="${vehicleDetails.licensePlate}"></span></td>
 			</tr>
+			<tr th:unless="${vehicleDetails.milesDriven == null}">
+				<td><strong>Miles Driven</strong></td>
+				<td><span th:text="${vehicleDetails.milesDriven}"></span></td>
+			</tr>
 			<tr
 				th:unless="${vehicleDetails.maintenanceDetails == null or vehicleDetails.maintenanceDetails.trim() == ':'}">
 				<td><strong>Maintenance Details</strong></td>

@@ -100,7 +100,7 @@
     <!-- Form for adding a new vehicle (initially hidden) -->
     <div id="addDriverForm" style="display: none;">
         <h3>Add New Driver</h3>
-        <form id="driverForm" action="/saveDriver" method="POST">
+        <form id="driverForm" action="/admin/saveDriver" method="POST">
             <label for="firstName">First Name:</label>
             <input type="text" id="firstName" name="firstName" required><br>
 
@@ -119,6 +119,13 @@
             <button type="submit">Submit</button>
         </form>
     </div>
+    
+    <div class="search-container">
+		<label for="searchBox">Search Vehicle:</label>
+		<input type="text" id="searchBox" oninput="searchDrivers()"
+			placeholder="Search by First Name, Last Name">
+	</div>
+<br>
     
     <table>
         <thead>
@@ -147,6 +154,59 @@
 		document.getElementById("addDriverButton").addEventListener("click", function () {
             document.getElementById("addDriverForm").style.display = "block";
         });
+        
+        function searchDrivers() {
+			var searchQuery = document.getElementById('searchBox').value;
+
+			// Make an AJAX request to the /searchVehicle endpoint
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					if (xhr.status === 200) {
+						// Successful response, update the table with the search results
+						updateTable(JSON.parse(xhr.responseText));
+					} else {
+						// Handle the error if needed
+						console.error("Error searching vehicles. Please try again.");
+					}
+				}
+			};
+
+			xhr.open('GET', '/admin/searchDrivers?query=' + encodeURIComponent(searchQuery), true);
+			xhr.send();
+		}
+		
+    function updateTable(driverResults) {
+        var tableBody = document.querySelector('tbody');
+        tableBody.innerHTML = ''; // Clear the existing table rows
+
+        // Iterate through the search results and populate the table
+        for (var i = 0; i < driverResults.length; i++) {
+            var driver = driverResults[i];
+            var row = tableBody.insertRow(i);
+
+            // Insert cells with driver details
+            // Note: Update the following lines to match your actual driver properties
+            var cell1 = row.insertCell(0);
+            cell1.textContent = driver.driverId;
+
+            var cell2 = row.insertCell(1);
+            cell2.textContent = driver.firstName;
+
+            var cell3 = row.insertCell(2);
+            cell3.textContent = driver.lastName;
+
+            var cell4 = row.insertCell(3);
+            cell4.textContent = driver.licenseNumber;
+
+            var cell5 = row.insertCell(4);
+            cell5.textContent = driver.phone;
+
+            // Append the row to the table body
+            tableBody.appendChild(row);
+        }
+    }
+
 		
     </script>
 </body>

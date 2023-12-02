@@ -15,6 +15,8 @@ public class VehicleDetails implements VehicleDetailsProjection{
 	public String maintenanceDetails;
 
 	public String vehicle_spec;
+	
+	public Long milesDriven;
 
 
 	@Override
@@ -52,9 +54,11 @@ public class VehicleDetails implements VehicleDetailsProjection{
 		// TODO Auto-generated method stub
 		return this.vehicle_spec;
 	}
+	
+	
 
 	public VehicleDetails(String make, String model, Long year, String licensePlate, String maintenanceDetails,
-			String vehicle_spec) {
+			String vehicle_spec,Long milesDriven) {
 		super();
 		this.make = make;
 		this.model = model;
@@ -62,6 +66,13 @@ public class VehicleDetails implements VehicleDetailsProjection{
 		this.licensePlate = licensePlate;
 		this.maintenanceDetails = maintenanceDetails;
 		this.vehicle_spec = vehicle_spec;
+		this.milesDriven = milesDriven;
+	}
+
+	@Override
+	public Long getMilesDriven() {
+		// TODO Auto-generated method stub
+		return this.milesDriven;
 	}
 
 	

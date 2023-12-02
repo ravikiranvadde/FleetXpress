@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,6 +54,18 @@ public class VehicleController {
 		modelAndView.addObject("banner", banner);
 		modelAndView.setViewName("vehicle");
 		return modelAndView;
+	}
+	
+	@GetMapping("/admin/searchVehicles")
+	public List<Vehicle> searchAllVehicles(@RequestParam String query) {
+		List<Vehicle> veh = vehService.searchAllAdminVehicles(query);
+		return veh;
+	}
+	
+	@GetMapping("/searchVehicles")
+	public List<Vehicle> searchAllCars(@RequestParam String query) {
+		List<Vehicle> veh = vehService.searchAllVehicles(query);
+		return veh;
 	}
 
 	@PostMapping("/admin/saveVehicle")
